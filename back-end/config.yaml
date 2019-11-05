@@ -1,0 +1,19 @@
+AppName: "blog"
+RunMode: "debug"  # debug release
+
+App:
+  JwtSecret: "WdZuIsaTOMkPdbmcFpjP4SpnpVATdVr7b77JTybbhEw36bOAf" # cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 49;echo
+
+Server:
+  Port: 8888
+
+DB:
+  User: "root"
+  Password: "toor"
+  Host: "127.0.0.1:3306" # IP:Port
+  Name: "blog"
+  TablePrefix: "blog_"
+
+Log:
+  Type: "text" # json text
+  Level: "info" # trace debug info warn error fatal panic 默认info
