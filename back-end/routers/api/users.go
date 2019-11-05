@@ -48,7 +48,7 @@ func GetAuth(c *gin.Context) {
 	data := make(map[string]interface{})
 	code := e.INVALID_PARAMS
 	if ok {
-		isExist := models.GetUser(username, password)
+		isExist := models.IsExistByUsername(username)
 		if isExist {
 			token, err := util.GenerateToken(username, password)
 			if err != nil {
@@ -94,14 +94,21 @@ func GetRegister(c *gin.Context) {
 	code := e.INVALID_PARAMS
 
 	if ok {
-		isExist := models.IsExist(username, email, password)
-		if isExist {
-			code = e.ERROR_REGISTER
+		isEmailExist := models.IsExistByEmail(email)
+		isUsername :=  models.IsExistByUsername(username)
+		if isEmailExist {
+			code = e.ERROR_REGISTER_CHECK_EMAIL
+		} else if isUsername{
+			code = e.ERROR_REGISTER_CHECK_USERNAME
 		} else {
-			// TODO: 将信息写入数据库
-			data["username"] = username
-			data["email"] = email
-			code = e.SUCCESS
+			err := models.AddUser(username, email, password)
+			if err != nil {
+				code = e.ERROR_REGISTER
+			} else {
+				data["username"] = username
+				data["email"] = email
+				code = e.SUCCESS
+			}
 		}
 
 	} else {
@@ -109,6 +116,7 @@ func GetRegister(c *gin.Context) {
 			log.Println(err.Key, err.Message)
 		}
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),

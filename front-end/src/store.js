@@ -2,7 +2,7 @@ export default {
     debug: true,
     state: {
       is_new: false,
-      is_authenticated: window.localStorage.getItem('madblog-token') ? true : false
+      is_authenticated: window.localStorage.getItem('token') ? true : false
     },
     setNewAction () {
       if (this.debug) { console.log('setNewAction triggered') }
@@ -18,7 +18,7 @@ export default {
     },
     logoutAction () {
       if (this.debug) console.log('logoutAction triggered')
-      window.localStorage.removeItem('madblog-token')
+      window.localStorage.removeItem('token')
       this.state.is_authenticated = false
     }
   }

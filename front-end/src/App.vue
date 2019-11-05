@@ -7,6 +7,7 @@
 
 <script>
 import Navbar from './components/Navbar'
+import store from "./store"
 
 export default {
   name: 'App',
@@ -15,7 +16,8 @@ export default {
   },
   mounted() {
       window.addEventListener("beforeunload", ()=>{
-          localStorage.removeItem('token');
+          localStorage.removeItem('token')
+          store.setNewAction()
       })
   }
 }
