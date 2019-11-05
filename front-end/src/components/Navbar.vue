@@ -25,13 +25,18 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
         </form>
 
-        <ul class="nav navbar-nav navbar-right">          
+        <ul v-if="sharedState.is_authenticated" class="nav navbar-nav navbar-right">          
           <li class="nav-item">
             <a class="nav-link disabled" href="#">Messages</a>
           </li>
           <li class="nav-item">
             <router-link to="/profile" class="nav-link">Profile</router-link>
           </li>
+          <li class="nav-item">
+            <a v-on:click="handlerLogout" class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+        <ul v-else class="nav navbar-nav navbar-right">          
           <li class="nav-item">
             <router-link to="/login" class="nav-link">Login</router-link>
           </li>
@@ -42,7 +47,20 @@
 </template>
 
 <script>
+import store from '../store.js'
+
 export default {
-  name: 'Navbar'  //this is the name of the component
+  name: 'Navbar',  //this is the name of the component
+  data () {
+    return {
+      sharedState: store.state
+    }
+  },
+  methods: {
+    handlerLogout (e) {
+      store.logoutAction()
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
